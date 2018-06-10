@@ -13,7 +13,7 @@
 <div class="container">
     <div class="jumbotron" style="text-align: center; padding: 2%;">
         <h1>Belly Button Biodiversity</h1>
-        <p>Use the interactive charts below to explore the dataset!</p>
+        <p>Select a sample to explore the dataset!</p>
     </div>
 <div class="row">
 <div class="col-md-2" style="margin: 0; padding: 0; padding-left: 2%">
@@ -67,6 +67,7 @@
             pie_values = []
             pie_labels = []
             scatter_sizes = []
+            otu_descriptions = []
             i = 0
             while (i < 10) {
                 pie_values.push(response.sample_values[i]);
