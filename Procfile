@@ -1,1 +1,1 @@
-web: gunicorn plotly_hw.app:app
+web: gunicorn belly-buttons-riehle.app:app
