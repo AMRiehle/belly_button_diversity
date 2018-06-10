@@ -1,1 +1,1 @@
-web: gunicorn belly-buttons-riehle.app:app
+web: gunicorn belly_button_diversity.app:app
