@@ -37,6 +37,7 @@
     <div id="bubble"></div>
 </div>
 </div>
+<div id="label-hack"></div>
 <script>
     Plotly.d3.json("/names", function(error, names) {
                 for (var i = 0; i < names.length; i++) {
@@ -67,7 +68,11 @@
             pie_values = []
             pie_labels = []
             scatter_sizes = []
-            otu_descriptions = []
+            scatter_x = response.otu_ids
+            scatter_y = response.sample_values
+            otu_desc = []
+            trace1_text = []
+            trace2_text = []
             i = 0
             while (i < 10) {
                 pie_values.push(response.sample_values[i]);
@@ -77,19 +82,34 @@
             for (i = 0; i < response.sample_values.length; i++) {
                 scatter_sizes.push(response.sample_values[i] / 2)
             }
+            Plotly.d3.json("/otu", function(error, response) {
+                for (i = 0; i < response.length; i ++) {
+                otu_desc.push(response[i])
+            }
+        for (i = 0; i < pie_labels.length; i++) {
+            trace1_text.push(otu_desc[pie_labels[i] - 1])
+        }
+        for (i = 0; i < scatter_x.length; i++) {
+            trace2_text.push(otu_desc[scatter_x[i] - 1])
+        }
         var trace1 = {
             labels: pie_labels,
             values: pie_values,
-            type: 'pie'
+            text: trace1_text,
+            textinfo: 'percent',
+            hoverinfo: 'all',
+            type: 'pie',
         };
 
         var trace2 = {
-            x: response.otu_ids,
-            y: response.sample_values,
+            x: scatter_x,
+            y: scatter_y,
             mode: "markers",
+            text: trace2_text,
+            hoverinfo: "x+y+text",
             marker: {
                 size: scatter_sizes,
-                color: response.otu_ids,
+                color: scatter_x,
                 colorscale: 'YIGnBu'
             },
             type: "scatter"
@@ -97,6 +117,7 @@
 
         updatePiePlot(trace1)
         updateBubblePlot(trace2)    
+        })
         })
         Plotly.d3.json(`/wfreq/${sel}`, function(error, response) {
 
@@ -169,6 +190,11 @@ Plotly.newPlot('gauge', data, layout);
             pie_values = []
             pie_labels = []
             scatter_sizes = []
+            scatter_x = response.otu_ids
+            scatter_y = response.sample_values
+            otu_desc = []
+            trace1_text = []
+            trace2_text = []
             i = 0
             while (i < 10) {
                 pie_values.push(response.sample_values[i]);
@@ -178,19 +204,34 @@ Plotly.newPlot('gauge', data, layout);
             for (i = 0; i < response.sample_values.length; i++) {
                 scatter_sizes.push(response.sample_values[i] / 2)
             }
+            Plotly.d3.json("/otu", function(error, response) {
+                for (i = 0; i < response.length; i ++) {
+                otu_desc.push(response[i])
+            }
+        for (i = 0; i < pie_labels.length; i++) {
+            trace1_text.push(otu_desc[pie_labels[i] - 1])
+        }
+        for (i = 0; i < scatter_x.length; i++) {
+            trace2_text.push(otu_desc[scatter_x[i] - 1])
+        }
         var trace1 = {
             labels: pie_labels,
             values: pie_values,
-            type: 'pie'
+            text: trace1_text,
+            textinfo: 'percent',
+            hoverinfo: 'all',
+            type: 'pie',
         };
 
         var trace2 = {
-            x: response.otu_ids,
-            y: response.sample_values,
+            x: scatter_x,
+            y: scatter_y,
             mode: "markers",
+            text: trace2_text,
+            hoverinfo: "x+y+text",
             marker: {
                 size: scatter_sizes,
-                color: response.otu_ids,
+                color: scatter_x,
                 colorscale: 'YIGnBu'
             },
             type: "scatter"
@@ -201,6 +242,7 @@ Plotly.newPlot('gauge', data, layout);
         Plotly.newPlot("pie", pie_data);
         Plotly.newPlot("bubble", bubble_data);
         })
+    })
 
 Plotly.d3.json("/wfreq/BB_940", function(error, response) {
 
@@ -271,12 +313,14 @@ Plotly.newPlot('gauge', data, layout);
             var Pie = document.getElementById('pie');
             Plotly.restyle(Pie, 'values', [newdata.values])
             Plotly.restyle(Pie, 'labels', [newdata.labels])
+            Plotly.restyle(Pie, 'text', [newdata.text])
         }
 
         function updateBubblePlot(newdata) {
             var Bubble = document.getElementById('bubble');
             Plotly.restyle(Bubble, 'x', [newdata.x])
             Plotly.restyle(Bubble, 'y', [newdata.y])
+            Plotly.restyle(Bubble, 'text', [newdata.text])
             Plotly.restyle(Bubble, 'marker.color', [newdata.marker.color])
             Plotly.restyle(Bubble, 'marker.size', [newdata.marker.size])
         }
