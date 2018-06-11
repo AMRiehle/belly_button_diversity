@@ -39,7 +39,7 @@ Plotly.d3.json("/names", function(error, names) {
                 i++
             }
             for (i = 0; i < response.sample_values.length; i++) {
-                scatter_sizes.push(response.sample_values[i] / 2)
+                scatter_sizes.push(Math.sqrt(response.sample_values[i]))
             }
             Plotly.d3.json("/otu", function(error, response) {
                 for (i = 0; i < response.length; i ++) {
@@ -161,7 +161,7 @@ Plotly.newPlot('gauge', data, layout);
                 i++
             }
             for (i = 0; i < response.sample_values.length; i++) {
-                scatter_sizes.push(response.sample_values[i] / 2)
+                scatter_sizes.push(Math.sqrt(response.sample_values[i]))
             }
             Plotly.d3.json("/otu", function(error, response) {
                 for (i = 0; i < response.length; i ++) {
